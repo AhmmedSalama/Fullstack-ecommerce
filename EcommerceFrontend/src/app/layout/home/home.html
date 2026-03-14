@@ -1,0 +1,193 @@
+<main class="py-4 py-md-5 bg-light min-vh-100 products-page">
+  <div class="container-xl px-3 px-md-4">
+
+    <!-- Search & Filter Bar -->
+    <div class="d-flex align-items-center gap-2 gap-md-3 mb-4 mb-md-5">
+      <button
+        class="btn btn-outline-primary rounded-pill px-3 px-md-4 py-2 fw-semibold flex-shrink-0"
+        data-bs-toggle="modal"
+        data-bs-target="#filterModal"
+      >
+        <i class="fa-solid fa-sliders me-1 me-md-2"></i>
+        <span class="d-none d-sm-inline">Filters</span>
+      </button>
+
+      <div class="flex-grow-1">
+        <div class="input-group">
+          <input
+            type="text"
+            class="form-control rounded-start-pill border-end-0 py-2 px-3 px-md-4"
+            placeholder="Search products..."
+            [(ngModel)]="searchInput"
+            aria-label="Search"
+            aria-describedby="search-btn"
+            (keyup.enter)="search()"
+          />
+          <button
+            class="btn btn-primary rounded-end-pill px-3 px-md-4"
+            type="button"
+            id="search-btn"
+            (click)="search()"
+          >
+            <i class="fa-solid fa-search"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Testimonials -->
+    <app-testimonial />
+
+    <!-- Products Header -->
+    <div class="d-flex align-items-center justify-content-between mb-3 mb-md-4 mt-4 mt-md-5">
+      <h2 class="fw-bold mb-0 fs-4 fs-md-2">Our Products</h2>
+      <span class="badge bg-primary rounded-pill px-3 py-2">
+        {{ products().length }} item{{ products().length !== 1 ? 's' : '' }}
+      </span>
+    </div>
+
+    <!-- Products Grid -->
+    <div class="row row-cols-2 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-2 g-md-4">
+      @for (product of products(); track product._id) {
+        <app-product-card [product]="product" [isPriority]="$first" />
+      }
+    </div>
+
+    <!-- Empty State -->
+    @if (products().length === 0) {
+      <div class="text-center py-5 my-3 my-md-5">
+        <div
+          class="bg-white rounded-circle shadow d-inline-flex align-items-center justify-content-center mb-4"
+          style="width: 90px; height: 90px"
+        >
+          <i class="fa-solid fa-magnifying-glass fa-2x text-muted"></i>
+        </div>
+        <h4 class="fw-semibold text-muted mb-2 fs-5">No products found</h4>
+        <p class="text-muted mb-4 small">Try adjusting your search or filters</p>
+        <button class="btn btn-primary rounded-pill px-4 px-md-5 py-2" routerLink="/home">
+          <i class="fa-solid fa-arrow-left me-2"></i>Continue Shopping
+        </button>
+      </div>
+    }
+
+  </div>
+</main>
+
+<!-- Filter Modal -->
+<div
+  class="modal left fade"
+  id="filterModal"
+  tabindex="-1"
+  aria-labelledby="filterModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-scrollable" style="max-width: min(100vw, 380px)">
+    <div class="modal-content shadow-lg border-0 rounded-4">
+
+      <div class="modal-header border-0 px-4 pt-4 pb-2">
+        <h5 class="modal-title fw-bold fs-5" id="filterModalLabel">
+          <i class="fa-solid fa-sliders me-2 text-primary"></i>Filters
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+      <div class="modal-body px-4 py-3">
+
+        <!-- Category -->
+        <label class="form-label fw-semibold text-uppercase small text-muted mb-1">Category</label>
+        <select class="form-select mb-3" [(ngModel)]="selectedCategory">
+          <option value="">All Categories</option>
+          @for (category of categories(); track category._id) {
+            <option [value]="category._id">{{ category.name }}</option>
+          }
+        </select>
+
+        <!-- Sub-category -->
+        <label class="form-label fw-semibold text-uppercase small text-muted mb-1">Sub-category</label>
+        <select class="form-select mb-3" [(ngModel)]="selectedSubCategory">
+          <option value="">All Sub-categories</option>
+          @for (category of categories(); track category._id) {
+            @for (subCategory of category.subCategories; track subCategory._id) {
+              @if (selectedCategory === '' || selectedCategory === category._id) {
+                <option [value]="subCategory._id">{{ subCategory.name }}</option>
+              }
+            }
+          }
+        </select>
+
+        <!-- Price Range -->
+        <label class="form-label fw-semibold text-uppercase small text-muted mb-1">Price Range</label>
+        <div class="d-flex justify-content-between small text-muted mb-2">
+          <span>EGP {{ minPrice }}</span>
+          <span>EGP {{ maxPrice }}</span>
+        </div>
+        <input
+          type="range"
+          class="form-range mb-2"
+          min="0"
+          [max]="maxPrice"
+          step="10"
+          [(ngModel)]="minPrice"
+        />
+        <input
+          type="range"
+          class="form-range mb-3"
+          [min]="minPrice"
+          [max]="maxPriceInProducts()"
+          step="10"
+          [(ngModel)]="maxPrice"
+        />
+        <div class="row g-2 mb-4">
+          <div class="col-6">
+            <label class="form-label small text-muted mb-1">Min</label>
+            <input
+              type="number"
+              class="form-control form-control-sm"
+              placeholder="Min"
+              [(ngModel)]="minPrice"
+            />
+          </div>
+          <div class="col-6">
+            <label class="form-label small text-muted mb-1">Max</label>
+            <input
+              type="number"
+              class="form-control form-control-sm"
+              placeholder="Max"
+              [(ngModel)]="maxPrice"
+            />
+          </div>
+        </div>
+
+        <!-- Sort By -->
+        <label class="form-label fw-semibold text-uppercase small text-muted mb-1">Sort By</label>
+        <select class="form-select" [(ngModel)]="sortBy">
+          <option value="">Default</option>
+          <option value="title">A to Z</option>
+          <option value="-title">Z to A</option>
+          <option value="price">Min Price</option>
+          <option value="-price">Max Price</option>
+          <option value="createdAt">Latest</option>
+          <option value="-createdAt">Oldest</option>
+        </select>
+
+      </div>
+
+      <div class="modal-footer border-0 bg-light rounded-bottom-4 px-4 py-3 gap-2">
+        <button
+          class="btn btn-outline-secondary rounded-pill px-4 flex-grow-1"
+          data-bs-dismiss="modal"
+        >
+          Close
+        </button>
+        <button
+          class="btn btn-primary rounded-pill px-4 flex-grow-1"
+          (click)="applyFilters()"
+          data-bs-dismiss="modal"
+        >
+          Apply
+        </button>
+      </div>
+
+    </div>
+  </div>
+</div>

@@ -1,0 +1,192 @@
+<main class="register-page d-flex justify-content-center align-items-center py-5">
+  <div class="p-4 p-md-5 rounded-4 shadow-lg bg-white register-card w-100" style="max-width: 560px">
+    <h2 class="fw-bold mb-4 text-center">Create Account</h2>
+
+    <form [formGroup]="registerForm" (ngSubmit)="register()">
+
+      <!-- Name -->
+      <div class="mb-3">
+        <label class="form-label fw-semibold">Username</label>
+        <input type="text" class="form-control" formControlName="name" />
+        @if (registerForm.get('name')?.invalid && registerForm.get('name')?.touched) {
+          @if (registerForm.get('name')?.errors?.['required']) {
+            <small class="text-danger">Name is required</small>
+          }
+        }
+      </div>
+
+      <!-- Email -->
+      <div class="mb-3">
+        <label class="form-label fw-semibold">Email Address</label>
+        <input
+          type="email"
+          class="form-control"
+          placeholder="example@example.com"
+          formControlName="email"
+        />
+        @if (registerForm.get('email')?.invalid && registerForm.get('email')?.touched) {
+          @if (registerForm.get('email')?.errors?.['required']) {
+            <small class="text-danger">Email is required</small>
+          }
+          @if (registerForm.get('email')?.errors?.['pattern']) {
+            <small class="text-danger">Please enter a valid email</small>
+          }
+        }
+      </div>
+
+      <!-- Password -->
+      <div class="mb-3">
+        <label class="form-label fw-semibold">Password</label>
+        <input type="password" class="form-control" formControlName="password" />
+        @if (registerForm.get('password')?.invalid && registerForm.get('password')?.touched) {
+          @if (registerForm.get('password')?.errors?.['required']) {
+            <small class="text-danger">Password is required</small>
+          }
+          @if (registerForm.get('password')?.errors?.['pattern']) {
+            <small class="text-danger">
+              Strong password required: 8+ chars, uppercase, lowercase, number
+            </small>
+          }
+        }
+      </div>
+
+      <!-- Confirm Password -->
+      <div class="mb-4">
+        <label class="form-label fw-semibold">Confirm Password</label>
+        <input type="password" class="form-control" formControlName="confirmPassword" />
+        @if (registerForm.get('confirmPassword')?.touched) {
+          @if (registerForm.get('confirmPassword')?.errors?.['required']) {
+            <small class="text-danger">Confirm Password is required</small>
+          }
+          @if (registerForm.get('confirmPassword')?.errors?.['dismatchpassword']) {
+            <small class="text-danger">Passwords don't match</small>
+          }
+        }
+      </div>
+
+      <hr class="my-4" />
+
+      <!-- Phones -->
+      <div formArrayName="phones" class="mb-4">
+        <p class="fw-bold mb-3">
+          <i class="fa-solid fa-phone text-primary me-2"></i>Phone Numbers
+        </p>
+        @for (phone of phones.controls; track phone) {
+          <div class="mb-2" [formGroupName]="$index">
+            <div class="input-group">
+              <span class="input-group-text">
+                <input
+                  class="form-check-input mt-0 me-1"
+                  type="radio"
+                  [id]="'radio-phone-' + $index"
+                  [checked]="phone.get('isDefault')?.value"
+                  (change)="setPhoneDefault($index)"
+                  name="phone"
+                />
+                <label [for]="'radio-phone-' + $index" class="small mb-0">Main</label>
+              </span>
+              <input type="text" class="form-control" placeholder="Phone number" formControlName="number" />
+              @if ($last) {
+                <button class="btn btn-outline-primary" type="button" (click)="addPhone()">
+                  <i class="fa-solid fa-plus"></i>
+                </button>
+              } @else {
+                <button class="btn btn-outline-danger" type="button" (click)="removePhone($index)">
+                  <i class="fa-solid fa-minus"></i>
+                </button>
+              }
+            </div>
+            @if (phone.get('number')?.invalid && phone.get('number')?.touched) {
+              @if (phone.get('number')?.errors?.['required']) {
+                <small class="text-danger">Phone number is required</small>
+              }
+              @if (phone.get('number')?.errors?.['pattern']) {
+                <small class="text-danger">Phone number must be 11 digits</small>
+              }
+            }
+          </div>
+        }
+      </div>
+
+      <hr class="my-4" />
+
+      <!-- Addresses -->
+      <div formArrayName="addresses" class="mb-4">
+        <p class="fw-bold mb-3">
+          <i class="fa-solid fa-location-dot text-primary me-2"></i>Addresses
+        </p>
+        @for (address of addresses.controls; track address) {
+          <div class="mb-3" [formGroupName]="$index">
+            <div class="d-flex align-items-center gap-2 mb-2">
+              <input
+                class="form-check-input"
+                type="radio"
+                [id]="'radio-address-' + $index"
+                [checked]="address.get('isDefault')?.value"
+                (change)="setAddressDefault($index)"
+                name="address"
+              />
+              <label [for]="'radio-address-' + $index" class="small fw-semibold mb-0">Set as Main</label>
+            </div>
+            <div class="input-group">
+              <input type="text" class="form-control" placeholder="Governorate" formControlName="governorate" />
+              <input type="text" class="form-control" placeholder="City" formControlName="city" />
+              <input type="text" class="form-control" placeholder="Street" formControlName="street" />
+              @if ($last) {
+                <button class="btn btn-outline-primary" type="button" (click)="addAddress()">
+                  <i class="fa-solid fa-plus"></i>
+                </button>
+              } @else {
+                <button class="btn btn-outline-danger" type="button" (click)="removeAddress($index)">
+                  <i class="fa-solid fa-minus"></i>
+                </button>
+              }
+            </div>
+            @if (address.get('governorate')?.invalid && address.get('governorate')?.touched) {
+              @if (address.get('governorate')?.errors?.['required']) {
+                <small class="text-danger">Governorate is required</small>
+              }
+            }
+            @if (address.get('city')?.invalid && address.get('city')?.touched) {
+              @if (address.get('city')?.errors?.['required']) {
+                <small class="text-danger">City is required</small>
+              }
+            }
+            @if (address.get('street')?.invalid && address.get('street')?.touched) {
+              @if (address.get('street')?.errors?.['required']) {
+                <small class="text-danger">Street is required</small>
+              }
+            }
+          </div>
+        }
+      </div>
+
+      <!-- Submit -->
+      <button
+        class="btn btn-primary w-100 py-2 rounded-pill fw-semibold"
+        type="submit"
+        [disabled]="registerForm.invalid"
+      >
+        Register
+      </button>
+
+      @if (registerForm.invalid && registerForm.touched) {
+        <div class="text-muted text-center mt-2">
+          <small>* Please provide correct data</small>
+        </div>
+      }
+
+    </form>
+  </div>
+</main>
+
+@if (isError()) {
+  <div
+    class="alert alert-danger alert-dismissible position-fixed end-0"
+    role="alert"
+    style="bottom: 45px; z-index: 1060; width: fit-content; max-width: 350px;"
+  >
+    <div>{{ alertMessage() }}</div>
+    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+  </div>
+}

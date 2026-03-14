@@ -1,0 +1,7 @@
+.hover-info:hover {
+    color: #0dcaf0 !important;
+    transition: 0.3s;
+  }
+  .tracking-widest {
+    letter-spacing: 0.2rem;
+  }

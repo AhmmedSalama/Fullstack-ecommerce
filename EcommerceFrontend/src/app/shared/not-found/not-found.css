@@ -1,0 +1,16 @@
+  .text-stroke-white {
+    -webkit-text-stroke: 2px white;
+    color: transparent;
+  }
+  
+
+  .btn-outline-light:hover {
+    background-color: white !important;
+    color: black !important;
+  }
+  
+
+  h1:hover {
+    text-shadow: 4px 4px 0px #0dcaf0;
+    cursor: default;
+  }

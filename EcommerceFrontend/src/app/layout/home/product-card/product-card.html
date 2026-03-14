@@ -1,0 +1,57 @@
+<div class="col h-100">
+  <div class="card product-card h-100">
+    <div class="position-relative" style="height: 250px;">
+      <img
+        [ngSrc]="product().image"
+        class="card-img-top"
+        [alt]="product().title"
+        fill
+        [priority]="isPriority()"
+      />
+    </div>
+    <div class="card-body">
+      <h5 class="card-title">{{ product().title }}</h5>
+      <p class="card-text product-desc">
+        {{ product().description }}
+      </p>
+      @if (product().stock < 6) {
+        <p class="card-text stock-warning mb-2">
+          <small>
+            {{ product().stock < 1 ? 'Out of Stock' : `Only ${product().stock} items` }}
+          </small>
+        </p>
+      }
+      <p class="card-text price-text d-flex justify-content-end mb-3">
+        EGP {{ product().price }}
+      </p>
+      <div class="d-flex gap-2">
+        <button class="btn btn-primary add-cart-btn flex-fill" (click)="addToCart()">
+          Add To Cart
+        </button>
+        <button class="btn btn-outline-primary details-btn" routerLink="/product/{{ product().slug }}">
+          Details
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ALERTS -->
+@if (isSuccess()) {
+  <div
+    class="alert alert-success alert-dismissible position-fixed end-0 cart-alert"
+    role="alert"
+  >
+    <div>{{ alertMessage() }}</div>
+    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+  </div>
+}
+@if (isError()) {
+  <div
+    class="alert alert-danger alert-dismissible position-fixed end-0 cart-alert"
+    role="alert"
+  >
+    <div>{{ alertMessage() }}</div>
+    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+  </div>
+}

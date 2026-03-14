@@ -1,0 +1,232 @@
+.orders-page {
+  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+  min-height: 100vh;
+}
+
+.orders-title {
+  font-size: 2.5rem !important;
+  font-weight: 700 !important;
+  color: #1e293b !important;
+}
+
+.orders-subtitle {
+  font-size: 1.1rem;
+}
+
+.status-filter {
+  border: 1px solid #e2e8f0 !important;
+  padding: 10px 16px !important;
+  font-weight: 500 !important;
+  
+  &:focus {
+    border-color: #3b82f6 !important;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1) !important;
+  }
+}
+
+/* ===== Order Cards ===== */
+.order-card {
+  background: #ffffff !important;
+  border-radius: 20px !important;
+  border: 1px solid #e2e8f0 !important;
+  overflow: hidden !important;
+  transition: all 0.3s ease !important;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06) !important;
+  
+  &:hover {
+    transform: translateY(-4px) !important;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.12) !important;
+  }
+}
+
+.order-header {
+  background: linear-gradient(135deg, #f8fafc, #f1f5f9);
+  padding: 1.5rem 2rem !important;
+  border-bottom: 1px solid #e9ecef !important;
+  position: relative;
+}
+
+.order-meta {
+  h6 {
+    color: #1e293b;
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+  }
+}
+
+.order-actions {
+  .edit-btn {
+    border: 1px solid #f59e0b !important;
+    color: #d97706 !important;
+    
+    &:hover {
+      background: #f59e0b !important;
+      color: white !important;
+    }
+  }
+  
+  .delete-btn {
+    &:hover {
+      background: #dc2626 !important;
+      color: white !important;
+    }
+  }
+}
+
+/* ===== Status Badge ===== */
+.order-status {
+  padding: 1rem 2rem;
+}
+
+.status-badge {
+  padding: 8px 20px !important;
+  border-radius: 50px !important;
+  font-weight: 600 !important;
+  font-size: 0.9rem !important;
+  text-transform: capitalize;
+  
+  &.status-pending {
+    background: linear-gradient(135deg, #fbbf24, #f59e0b) !important;
+    color: #92400e !important;
+  }
+  
+  &.status-processing {
+    background: linear-gradient(135deg, #3b82f6, #1d4ed8) !important;
+    color: white !important;
+  }
+  
+  &.status-shipped {
+    background: linear-gradient(135deg, #10b981, #059669) !important;
+    color: white !important;
+  }
+  
+  &.status-delivered {
+    background: linear-gradient(135deg, #059669, #047857) !important;
+    color: white !important;
+  }
+  
+  &.status-cancelled,
+  &.status-rejected {
+    background: linear-gradient(135deg, #ef4444, #dc2626) !important;
+    color: white !important;
+  }
+}
+
+/* ===== Order Items ===== */
+.order-item {
+  background: #f8fafc;
+  border-radius: 12px;
+  padding: 1.25rem !important;
+  border: 1px solid #e9ecef;
+  
+  .product-image-container {
+    img {
+      object-fit: cover !important;
+      border-radius: 10px !important;
+    }
+  }
+  
+  .product-name {
+    color: #1e293b;
+    font-weight: 600;
+  }
+  
+  .item-total {
+    color: #059669;
+    font-size: 1.1rem;
+  }
+}
+
+/* ===== Shipping Info ===== */
+.shipping-info {
+  background: linear-gradient(145deg, #f8fafc, #f1f5f9) !important;
+  
+  .info-title {
+    color: #475569;
+    font-weight: 600;
+  }
+  
+  .address {
+    color: #64748b;
+    line-height: 1.5;
+  }
+  
+  .total-price {
+    color: #1e293b;
+    font-weight: 700;
+  }
+}
+
+.cancel-section {
+  .cancel-btn {
+    border: 1px solid #ef4444 !important;
+    color: #dc2626 !important;
+    
+    &:hover {
+      background: #ef4444 !important;
+      color: white !important;
+    }
+  }
+}
+
+/* ===== Empty State ===== */
+.empty-state {
+  max-width: 500px;
+  margin: 4rem auto;
+}
+
+/* ===== Modals ===== */
+.modal {
+  .modal-content {
+    border-radius: 20px !important;
+    border: none !important;
+    box-shadow: 0 25px 80px rgba(0, 0, 0, 0.15) !important;
+  }
+  
+  .icon-circle {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+/* ===== Alerts ===== */
+.orders-alert {
+  bottom: 20px !important;
+  right: 20px !important;
+  border-radius: 12px !important;
+  backdrop-filter: blur(12px) !important;
+}
+
+/* ===== Form Validation ===== */
+input.ng-invalid.ng-touched {
+  border-color: #ef4445 !important;
+  box-shadow: 0 0 0 3px rgba(239, 68, 69, 0.1) !important;
+}
+
+.msg {
+  color: #ef4445 !important;
+  font-size: 0.85rem !important;
+  margin-top: 0.5rem !important;
+  padding: 6px 10px !important;
+  background: #fef2f2 !important;
+  border-radius: 6px !important;
+  border-left: 3px solid #ef4445 !important;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 768px) {
+  .order-header {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 1rem !important;
+  }
+  
+  .order-actions {
+    position: static !important;
+    margin: 0 !important;
+  }
+}

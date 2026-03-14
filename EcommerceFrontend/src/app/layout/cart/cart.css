@@ -1,0 +1,156 @@
+/* Page background */
+.cart-page {
+  background-color: #f5f5f5;
+}
+
+/* Shell */
+.cart-shell {
+  border-radius: 0;
+}
+
+/* Title */
+.cart-title {
+  font-size: 1.6rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+}
+
+/* Image block – الصورة مكبّرة */
+.cart-img-wrapper {
+  background: #ffffff;
+  border-radius: 0;
+  padding: 0.5rem;
+  border: 1px solid #eee;
+  min-height: 160px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cart-item-img {
+  width: 100%;
+  height: 160px;
+  object-fit: cover;
+}
+
+@media (min-width: 992px) {
+  .cart-img-wrapper {
+    min-height: 200px;
+  }
+
+  .cart-item-img {
+    height: 200px;
+  }
+}
+
+/* باقي الستايل زي ما هو */
+.cart-item {
+  background-color: #ffffff;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.cart-item:last-child {
+  border-bottom: none;
+}
+
+.cart-item-title {
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.cart-item-price,
+.cart-new-price {
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+.cart-old-price {
+  font-size: 0.85rem;
+  color: #9ca3af;
+  text-decoration: line-through;
+}
+
+.cart-qty-group {
+  max-width: 220px;
+}
+
+.cart-qty-group .btn {
+  border-radius: 0;
+}
+
+.cart-qty-group .form-control {
+  border-radius: 0;
+  border-left: 0;
+  border-right: 0;
+}
+
+.cart-line-total span {
+  font-weight: 600;
+}
+
+.cart-remove-btn {
+  color: #9ca3af;
+  font-size: 0.9rem;
+  padding: 0.15rem 0.4rem;
+}
+
+.cart-remove-btn:hover {
+  color: #111827;
+}
+
+.cart-summary {
+  border-top: 1px solid #e5e7eb;
+}
+
+.cart-summary-price {
+  font-weight: 700;
+}
+
+.cart-checkout-btn {
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.cart-return-btn {
+  text-transform: uppercase;
+  font-size: 0.8rem;
+}
+
+.cart-login-hint {
+  color: #6b7280;
+}
+
+.cart-empty h4 {
+  font-weight: 500;
+}
+
+.cart-item-changed {
+  border-left: 3px solid #f97316;
+  background-color: #fff7ed;
+}
+
+.cart-changed-title {
+  font-size: 1.1rem;
+}
+
+.cart-alert {
+  bottom: 45px;
+  margin-right: 1.25rem;
+}
+
+@media (max-width: 768px) {
+  .cart-shell {
+    border-radius: 0;
+  }
+
+  .cart-line-total {
+    text-align: left;
+    margin-top: 0.5rem;
+  }
+
+  .cart-alert {
+    left: 0.75rem;
+    right: 0.75rem;
+    width: auto;
+  }
+}

@@ -1,0 +1,115 @@
+/* ===== Page ===== */
+.products-page {
+  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+}
+
+/* ===== Filter Toggle ===== */
+.filter-toggle {
+  border: 1px solid #e2e8f0 !important;
+  color: #475569 !important;
+  font-weight: 500 !important;
+  padding: 12px 20px !important;
+  transition: all 0.2s ease !important;
+}
+
+.filter-toggle:hover {
+  background: #f1f5f9 !important;
+  border-color: #cbd5e1 !important;
+}
+
+/* ===== Search Bar ===== */
+.search-wrapper {
+  max-width: 540px !important;
+}
+
+.search-input {
+  border: 1px solid #e2e8f0 !important;
+  border-right: none !important;
+  padding: 14px 20px !important;
+  border-radius: 12px 0 0 12px !important;
+}
+
+.search-input:focus {
+  border-color: #3b82f6 !important;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.search-btn {
+  background: linear-gradient(135deg, #3b82f6, #1d4ed8) !important;
+  border: none !important;
+  padding: 14px 20px !important;
+  border-radius: 0 12px 12px 0 !important;
+}
+
+.search-btn:hover {
+  background: linear-gradient(135deg, #1d4ed8, #1e40af) !important;
+}
+
+/* ===== Products Title ===== */
+.products-title {
+  font-size: 2.5rem !important;
+  font-weight: 700 !important;
+  color: #1e293b !important;
+}
+
+/* ===== Filter Modal ===== */
+.modal.left .modal-dialog {
+  position: fixed !important;
+  margin: 0 !important;
+  left: 0 !important;
+  top: 0 !important;
+  bottom: 0 !important;
+  height: 100% !important;
+  width: 360px !important;
+  transform: translateX(-100%) !important;
+}
+
+.modal.left.show .modal-dialog {
+  transform: translateX(0) !important;
+}
+
+.modal.left .modal-content {
+  height: 100% !important;
+  border-radius: 0 20px 20px 0 !important;
+}
+
+/* ===== Filter Sections ===== */
+.filter-section {
+  font-size: 0.85rem !important;
+  letter-spacing: 1px !important;
+  color: #64748b !important;
+  margin-bottom: 1rem !important;
+}
+
+.filter-select {
+  border: 1px solid #e2e8f0 !important;
+  border-radius: 8px !important;
+  padding: 12px !important;
+}
+
+.range-preview {
+  font-weight: 500;
+  font-size: 0.85rem;
+  color: #64748b;
+}
+
+.range-slider .form-range {
+  height: 6px !important;
+}
+
+/* ===== No Products ===== */
+.no-products {
+  color: #64748b;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 768px) {
+  .d-flex.align-items-center.justify-content-between {
+    flex-direction: column-reverse !important;
+    gap: 1.5rem !important;
+  }
+  
+  .search-wrapper {
+    width: 100% !important;
+  }
+}

@@ -1,0 +1,350 @@
+<main class="py-4 py-md-5 bg-light min-vh-100">
+  <div class="container">
+    <h2 class="fw-bold mb-4">Your Profile</h2>
+
+    <div class="card border-0 shadow-sm rounded-4">
+      <div class="card-body p-4">
+
+        <!-- Action Buttons -->
+        <div class="d-flex justify-content-end gap-2 mb-4">
+          <button
+            type="button"
+            class="btn btn-warning text-white rounded-pill px-3 shadow-sm"
+            data-bs-toggle="modal"
+            data-bs-target="#updateAccountModal"
+          >
+            <i class="fa-solid fa-pen me-1"></i>
+            <span class="d-none d-sm-inline">Edit</span>
+          </button>
+          <button
+            type="button"
+            class="btn btn-danger rounded-pill px-3 shadow-sm"
+            data-bs-toggle="modal"
+            data-bs-target="#deleteAccountModal"
+          >
+            <i class="fa-solid fa-trash-can me-1"></i>
+            <span class="d-none d-sm-inline">Delete</span>
+          </button>
+        </div>
+
+        <!-- User Info -->
+        <div class="d-flex flex-column flex-sm-row align-items-center align-items-sm-start gap-3 mb-4">
+          <i class="fa-solid fa-circle-user text-secondary" style="font-size: 5rem; flex-shrink: 0"></i>
+          <div class="text-center text-sm-start">
+            <p class="mb-1 fs-5 fw-semibold">{{ userData().name | titlecase }}</p>
+            <p class="mb-0 text-muted">{{ userData().email }}</p>
+          </div>
+        </div>
+
+        <hr />
+
+        <!-- Addresses -->
+        @if (userData().addresses && userData().addresses.length > 0) {
+          <div class="mb-4">
+            <h5 class="fw-bold mb-3">
+              <i class="fa-solid fa-location-dot text-primary me-2"></i>Addresses
+            </h5>
+            <div class="row g-2">
+              @for (address of userData().addresses; track address._id) {
+                <div class="col-12 col-md-6">
+                  <div class="p-3 rounded-3 border bg-white d-flex align-items-start gap-2">
+                    @if (address.isDefault) {
+                      <span class="badge bg-primary rounded-pill mt-1">Main</span>
+                    } @else {
+                      <span class="badge bg-secondary rounded-pill mt-1">{{ $index + 1 }}</span>
+                    }
+                    <span class="text-muted small">
+                      {{ address.governorate | titlecase }},
+                      {{ address.city | titlecase }},
+                      {{ address.street | titlecase }}
+                    </span>
+                  </div>
+                </div>
+              }
+            </div>
+          </div>
+        }
+
+        <!-- Phones -->
+        @if (userData().phones && userData().phones.length > 0) {
+          <div class="mb-4">
+            <h5 class="fw-bold mb-3">
+              <i class="fa-solid fa-phone text-primary me-2"></i>Phone Numbers
+            </h5>
+            <div class="row g-2">
+              @for (phone of userData().phones; track phone._id) {
+                <div class="col-12 col-sm-6 col-md-4">
+                  <div class="p-3 rounded-3 border bg-white d-flex align-items-center gap-2">
+                    @if (phone.isDefault) {
+                      <span class="badge bg-primary rounded-pill">Main</span>
+                    } @else {
+                      <span class="badge bg-secondary rounded-pill">{{ $index + 1 }}</span>
+                    }
+                    <span class="text-muted small">{{ phone.number }}</span>
+                  </div>
+                </div>
+              }
+            </div>
+          </div>
+        }
+
+        <hr />
+
+        <!-- Logout -->
+        <div class="d-flex justify-content-end">
+          <button type="button" class="btn btn-outline-danger rounded-pill px-4" (click)="logout()">
+            <i class="fa-solid fa-right-from-bracket me-2"></i>Logout
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</main>
+
+<!-- Edit Modal -->
+<div class="modal fade" id="updateAccountModal" tabindex="-1" aria-labelledby="updateAccountModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-scrollable">
+    <div class="modal-content border-0 shadow-lg rounded-4">
+      <div class="modal-header border-0 bg-warning text-white rounded-top-4">
+        <h5 class="modal-title fw-bold" id="updateAccountModalLabel">
+          <i class="fa-solid fa-pen me-2"></i>Edit Account
+        </h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+      <div class="modal-body p-4">
+        @if (editForm) {
+          <form [formGroup]="editForm">
+
+            <!-- Name & Email -->
+            <div class="row g-3 mb-3">
+              <div class="col-12 col-md-6">
+                <label class="form-label fw-semibold">Username</label>
+                <input type="text" class="form-control shadow-sm" formControlName="name" />
+                @if (editForm.get('name')?.invalid && editForm.get('name')?.touched) {
+                  @if (editForm.get('name')?.errors?.['required']) {
+                    <small class="text-danger">Name is required</small>
+                  }
+                }
+              </div>
+              <div class="col-12 col-md-6">
+                <label class="form-label fw-semibold">Email Address</label>
+                <input type="email" class="form-control shadow-sm" placeholder="example@example.com" formControlName="email" />
+                @if (editForm.get('email')?.invalid && editForm.get('email')?.touched) {
+                  @if (editForm.get('email')?.errors?.['required']) {
+                    <small class="text-danger">Email is required</small>
+                  }
+                  @if (editForm.get('email')?.errors?.['pattern']) {
+                    <small class="text-danger">Please enter a valid email</small>
+                  }
+                }
+              </div>
+            </div>
+
+            <!-- Passwords -->
+            <div class="row g-3 mb-4">
+              <div class="col-12 col-md-4">
+                <label class="form-label fw-semibold">Current Password</label>
+                <input type="password" class="form-control shadow-sm" formControlName="prevPassword" />
+                @if (editForm.get('prevPassword')?.invalid && editForm.get('prevPassword')?.touched) {
+                  @if (editForm.get('prevPassword')?.errors?.['required']) {
+                    <small class="text-danger">Current Password is required</small>
+                  }
+                }
+              </div>
+              <div class="col-12 col-md-4">
+                <label class="form-label fw-semibold">New Password</label>
+                <input type="password" class="form-control shadow-sm" formControlName="password" />
+                @if (editForm.get('password')?.invalid && editForm.get('password')?.touched) {
+                  @if (editForm.get('password')?.errors?.['required']) {
+                    <small class="text-danger">New Password is required</small>
+                  }
+                  @if (editForm.get('password')?.errors?.['pattern']) {
+                    <small class="text-danger">
+                      Strong password required: 8+ chars, uppercase, lowercase, number
+                    </small>
+                  }
+                }
+              </div>
+              <div class="col-12 col-md-4">
+                <label class="form-label fw-semibold">Confirm Password</label>
+                <input type="password" class="form-control shadow-sm" formControlName="confirmPassword" />
+                @if (editForm.get('confirmPassword')?.invalid && editForm.get('confirmPassword')?.touched) {
+                  @if (editForm.get('confirmPassword')?.errors?.['required']) {
+                    <small class="text-danger">Confirm Password is required</small>
+                  }
+                  @if (editForm.get('confirmPassword')?.errors?.['dismatchpassword']) {
+                    <small class="text-danger">Passwords don't match</small>
+                  }
+                }
+              </div>
+            </div>
+
+            <!-- Phones -->
+            <div class="mb-4">
+              <h6 class="fw-bold mb-3">
+                <i class="fa-solid fa-phone text-primary me-2"></i>Phone Numbers
+              </h6>
+              <div formArrayName="phones">
+                @for (phone of phones.controls; track phone) {
+                  <div class="mb-2" [formGroupName]="$index">
+                    <div class="input-group">
+                      <span class="input-group-text">
+                        <input
+                          class="form-check-input mt-0 me-1"
+                          type="radio"
+                          [id]="'radio-phone-' + $index"
+                          [checked]="phone.get('isDefault')?.value"
+                          (change)="setPhoneDefault($index)"
+                          name="phone"
+                        />
+                        <label [for]="'radio-phone-' + $index" class="small mb-0">Main</label>
+                      </span>
+                      <input type="text" class="form-control" formControlName="number" placeholder="Phone number" />
+                      @if ($last) {
+                        <button class="btn btn-primary" type="button" (click)="addPhone()">
+                          <i class="fa-solid fa-plus"></i>
+                        </button>
+                      } @else {
+                        <button class="btn btn-danger" type="button" (click)="removePhone($index)">
+                          <i class="fa-solid fa-minus"></i>
+                        </button>
+                      }
+                    </div>
+                    @if (phone.get('number')?.invalid && phone.get('number')?.touched) {
+                      @if (phone.get('number')?.errors?.['required']) {
+                        <small class="text-danger">Phone number is required</small>
+                      }
+                      @if (phone.get('number')?.errors?.['pattern']) {
+                        <small class="text-danger">Phone number must be 11 digits</small>
+                      }
+                    }
+                  </div>
+                }
+              </div>
+            </div>
+
+            <!-- Addresses -->
+            <div class="mb-2">
+              <h6 class="fw-bold mb-3">
+                <i class="fa-solid fa-location-dot text-primary me-2"></i>Addresses
+              </h6>
+              <div formArrayName="addresses">
+                @for (address of addresses.controls; track address) {
+                  <div class="mb-3" [formGroupName]="$index">
+                    <div class="d-flex align-items-center gap-2 mb-2">
+                      <input
+                        class="form-check-input"
+                        type="radio"
+                        [id]="'radio-address-' + $index"
+                        [checked]="address.get('isDefault')?.value"
+                        (change)="setAddressDefault($index)"
+                        name="address"
+                      />
+                      <label [for]="'radio-address-' + $index" class="form-label mb-0 small fw-semibold">
+                        Set as Main
+                      </label>
+                    </div>
+                    <div class="input-group">
+                      <input type="text" class="form-control" placeholder="Governorate" formControlName="governorate" />
+                      <input type="text" class="form-control" placeholder="City" formControlName="city" />
+                      <input type="text" class="form-control" placeholder="Street" formControlName="street" />
+                      @if ($last) {
+                        <button class="btn btn-primary" type="button" (click)="addAddress()">
+                          <i class="fa-solid fa-plus"></i>
+                        </button>
+                      } @else {
+                        <button class="btn btn-danger" type="button" (click)="removeAddress($index)">
+                          <i class="fa-solid fa-minus"></i>
+                        </button>
+                      }
+                    </div>
+                    @if (address.get('governorate')?.invalid && address.get('governorate')?.touched) {
+                      @if (address.get('governorate')?.errors?.['required']) {
+                        <small class="text-danger">Governorate is required</small>
+                      }
+                    }
+                    @if (address.get('city')?.invalid && address.get('city')?.touched) {
+                      @if (address.get('city')?.errors?.['required']) {
+                        <small class="text-danger">City is required</small>
+                      }
+                    }
+                    @if (address.get('street')?.invalid && address.get('street')?.touched) {
+                      @if (address.get('street')?.errors?.['required']) {
+                        <small class="text-danger">Street is required</small>
+                      }
+                    }
+                  </div>
+                }
+              </div>
+            </div>
+
+          </form>
+        }
+      </div>
+
+      <div class="modal-footer border-0 bg-light rounded-bottom-4">
+        <button type="button" class="btn btn-outline-secondary rounded-pill px-4" data-bs-dismiss="modal">Close</button>
+        <button
+          type="button"
+          class="btn btn-warning text-white rounded-pill px-5 shadow-sm"
+          data-bs-dismiss="modal"
+          (click)="isCorrectPassword()"
+        >
+          Save Changes
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Delete Modal -->
+<div class="modal fade" id="deleteAccountModal" tabindex="-1" aria-labelledby="deleteAccountModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content border-0 shadow-lg rounded-4 text-center">
+      <div class="modal-header border-0 flex-column pt-4">
+        <div class="bg-danger text-white rounded-circle d-flex align-items-center justify-content-center mb-3" style="width:64px; height:64px">
+          <i class="fa-solid fa-trash-can fs-3"></i>
+        </div>
+        <h5 class="modal-title fw-bold" id="deleteAccountModalLabel">Delete Account?</h5>
+      </div>
+      <div class="modal-body text-muted">
+        <p class="mb-0">Are you sure you want to permanently delete your account?</p>
+      </div>
+      <div class="modal-footer border-0 justify-content-center gap-3 pb-4">
+        <button type="button" class="btn btn-outline-secondary rounded-pill px-5" data-bs-dismiss="modal">Cancel</button>
+        <button
+          type="button"
+          class="btn btn-danger rounded-pill px-5 shadow-sm"
+          data-bs-dismiss="modal"
+          (click)="confirmDelete()"
+        >
+          Delete
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Alerts -->
+@if (isSuccess()) {
+  <div
+    class="alert alert-success alert-dismissible position-fixed end-0 shadow-lg border-0"
+    role="alert"
+    style="bottom: 45px; z-index: 1060; width: fit-content; max-width: 350px;"
+  >
+    <div>{{ alertMessage() }}</div>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+}
+@if (isError()) {
+  <div
+    class="alert alert-danger alert-dismissible position-fixed end-0 shadow-lg border-0"
+    role="alert"
+    style="bottom: 45px; z-index: 1060; width: fit-content; max-width: 350px;"
+  >
+    <div>{{ alertMessage() }}</div>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+}
